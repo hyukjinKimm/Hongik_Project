@@ -4,6 +4,8 @@ import os
 from dataGen import Celeb_Dataset
 import albumentations as A
 from espcn_3dim import create_espcn_3dim_model
+from callbacks import callbacks
+from criteria import dim3_psnr
 load_dotenv()
 
 base_path = os.getenv('BASE_PATH')
@@ -28,7 +30,6 @@ SCALE = 4
 train_df = data_df[data_df['partition']=='0']
 test_df = data_df[data_df['partition']=='1']
 val_df = data_df[data_df['partition']=='2']
-# image file의 위치가 있는 데이터와 label값을 numpy array로 변환.
 train_image_filenames = train_df['path'].values
 validation_image_filenames = val_df['path'].values
 
@@ -45,8 +46,15 @@ val_ds = Celeb_Dataset(validation_image_filenames, batch_size=BATCH_SIZE, augmen
 model = create_espcn_3dim_model(SCALE)
 model.summary()
 
+model.compile(optimizer='adam', loss='mse', metrics=[dim3_psnr.dim3_psnr])
+# 모델 훈련
+history = model.fit(tr_ds, batch_size=BATCH_SIZE, epochs=2, shuffle=True,
+                    validation_data=val_ds,
+                    callbacks=[callbacks.mcp_cb, callbacks.rlr_cb, callbacks.ely_cb])
 
+import pickle
 
-
-
-
+# history 객체 저장
+save_path = os.getenv('HISTORY_PATH') + '\history.pkl'
+with open(save_path, 'wb') as f:
+    pickle.dump(history.history, f)
