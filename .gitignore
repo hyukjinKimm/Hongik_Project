@@ -132,6 +132,7 @@ celerybeat.pid
 *.sage.py
 
 .idea/
+weight/
 
 # Environments
 .env
