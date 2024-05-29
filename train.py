@@ -6,6 +6,12 @@ import albumentations as A
 from espcn_3dim import create_espcn_3dim_model
 from callbacks import callbacks
 from criteria import dim3_psnr
+import tensorflow.python.keras as tf_keras
+from keras import __version__
+
+tf_keras.__version__ = __version__
+
+print(tf_keras.__version__)
 load_dotenv()
 
 base_path = os.getenv('BASE_PATH')
