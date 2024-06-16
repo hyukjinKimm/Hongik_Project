@@ -6,9 +6,9 @@ import random
 IMAGE_SIZE = 44
 
 # 입력 인자 image_filenames는 numpy array
-class Celeb_Dataset(Sequence):
+class Celeb_Dataset_1dim(Sequence):
     # 객체 생성 인자로 들어온 값을 객체 내부 변수로 할당.
-    def __init__(self, image_filenames, batch_size=32, augmentor=None, shuffle=False, rescale=False):
+    def __init__(self, image_filenames, batch_size=32, augmentor=None, shuffle=False, rescale=False, channel=0):
         '''
         파라미터 설명
         image_filenames: opencv로 image를 로드할 파일의 절대 경로들
@@ -23,6 +23,7 @@ class Celeb_Dataset(Sequence):
         self.augmentor = augmentor
         self.shuffle = shuffle
         self.rescale = rescale
+        self.channel = channel
         # train data의 경우
         if self.shuffle:
             # 객체 생성시에 한번 데이터를 섞음.
@@ -47,8 +48,8 @@ class Celeb_Dataset(Sequence):
         # 만일 객체 생성 인자로 albumentation으로 만든 augmentor가 주어진다면 아래와 같이 augmentor를 이용하여 image 변환
         # albumentations은 개별 image만 변환할 수 있으므로 batch_size만큼 할당된 image_name_batch를 한 건씩 iteration하면서 변환 수행.
         # image_batch 배열은 float32 로 설정.
-        input_batch = np.zeros((image_name_batch.shape[0], IMAGE_SIZE, IMAGE_SIZE, 3))
-        target_batch = np.zeros((image_name_batch.shape[0], 176, 176, 3))
+        input_batch = np.zeros((image_name_batch.shape[0], IMAGE_SIZE, IMAGE_SIZE))
+        target_batch = np.zeros((image_name_batch.shape[0], 176, 176))
 
         # batch_size에 담긴 건수만큼 iteration 하면서 opencv image load -> image augmentation 변환(augmentor가 not None일 경우)-> image_batch에 담음.
         for image_index in range(image_name_batch.shape[0]):
@@ -65,8 +66,8 @@ class Celeb_Dataset(Sequence):
                 image1 = image1 / 255.0
                 image2 = image2 / 255.0
 
-            input_batch[image_index] = image1
-            target_batch[image_index] = image2
+            input_batch[image_index] = image1[:,:,self.channel]
+            target_batch[image_index] = image2[:,:,self.channel]
 
         return input_batch, target_batch
 

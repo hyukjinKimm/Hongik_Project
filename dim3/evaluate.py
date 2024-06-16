@@ -6,7 +6,6 @@ from testDataGen import Celeb_Dataset
 import albumentations as A
 from espcn_3dim import create_espcn_3dim_model
 import matplotlib.pyplot as plt
-from criteria import dim3_psnr
 import tensorflow.python.keras as tf_keras
 from keras import __version__
 tf_keras.__version__ = __version__
@@ -38,7 +37,7 @@ test_image_filenames = test_df['path'].values
 
 celeb_augmentor = A.Compose([
    # A.Blur(blur_limit=(7, 7))  # 블러 적용, blur_limit을 (7, 7)로 설정하여 강도를 7로 고정합니다.
-    A.GaussianBlur(blur_limit=(7, 7), sigma_limit=(3, 3))  # 가우시안 블러 적용
+    A.GaussianBlur(blur_limit=(7, 7), sigma_limit=(3, 3), p=1.0)  # 가우시안 블러 적용
 ])
 
 # Sequence를 상속받은 CnD_Dataset을 image 파일 위치, label값, albumentations 변환 객체를 입력하여 생성.
@@ -47,7 +46,6 @@ test_ds = Celeb_Dataset(test_image_filenames, batch_size=BATCH_SIZE, augmentor=c
 
 model = create_espcn_3dim_model(SCALE)
 model.summary()
-model.compile(optimizer='adam', loss='mse', metrics=[dim3_psnr.dim3_psnr])
 
 weights_save_path = os.getenv('WEIGHT_PATH') + '\weight.20-0.0017512421.weights.h5'
 model.load_weights(weights_save_path)

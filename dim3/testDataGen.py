@@ -28,17 +28,11 @@ class Celeb_Dataset(Sequence):
             # 객체 생성시에 한번 데이터를 섞음.
             self.on_epoch_end()
 
-    # Sequence를 상속받은 Dataset은 batch_size 단위로 입력된 데이터를 처리함.
-    # __len__()은 전체 데이터 건수가 주어졌을 때 batch_size 단위로 몇번 데이터를 반환하는지 나타남
 
     def __len__(self):
-        # batch_size단위로 데이터를 몇번 가져와야하는지 계산하기 위해 전체 데이터 건수를 batch_size로 나누되, 정수로 정확히 나눠지지 않을 경우 1회를 더한다.
         return int(np.ceil(len(self.image_filenames) / self.batch_size))
 
     def __getitem__(self, index):
-        # batch_size 단위로 image_array, label_array 데이터를 가져와서 변환한 뒤 다시 반환함
-        # 인자로 몇번째 batch 인지를 나타내는 index를 입력하면 해당 순서에 해당하는 batch_size 만큼의 데이타를 가공하여 반환
-        # batch_size 갯수만큼 변환된 input_batch 과 target_batch
 
         # index는 몇번째 batch인지를 나타냄.
         # batch_size만큼 순차적으로 데이터를 가져오려면 array에서 index*self.batch_size:(index+1)*self.batch_size 만큼의 연속 데이터를 가져오면 됨
