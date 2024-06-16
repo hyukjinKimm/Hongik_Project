@@ -10,11 +10,7 @@
 
 - 팀장 : 김혁진
 
-## ⚙️ 개발 환경
-https://github.com/hyukjinKimm/Hongik_Project/blob/0d9f18a75455cf4853e80963dc2920d0beb725ea/requirements.txt
-
 ## 📌 주요 구성
-
 openCV 를 이용한 페이스 디텍션 + ESPCN 모델을 통한 이미지 업스케일링 
 
 #### 업스케일링 
@@ -24,6 +20,7 @@ openCV 를 이용한 페이스 디텍션 + ESPCN 모델을 통한 이미지 업�
 ## 개발 목표
 # 1학기
 - 업스케일링 모델 구죽✅
+- [1학기 최종 보고서](https://tangy-lasagna-a67.notion.site/1-81e064de86a9444a9349b34633c5f6f1?pvs=4)
 # 2학기
 - openCV 페이스 디텍션 도입 + 업스케일링 모델과 연결
 
