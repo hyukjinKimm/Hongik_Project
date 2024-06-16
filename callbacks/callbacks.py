@@ -1,3 +1,4 @@
+
 from tensorflow.python.keras.callbacks import ReduceLROnPlateau , EarlyStopping , ModelCheckpoint
 from dotenv import load_dotenv
 import os
@@ -26,4 +27,3 @@ mcp_cb_G = ModelCheckpoint(filepath= FILEPATH_G, monitor='val_loss',
                          save_best_only=True, save_weights_only=True, mode='min', verbose=1)
 mcp_cb_B = ModelCheckpoint(filepath= FILEPATH_B, monitor='val_loss',
                          save_best_only=True, save_weights_only=True, mode='min', verbose=1)
-
